@@ -1,11 +1,13 @@
 ---
 exp_name: W-S
 exp_dir: exp/W-S
-seed: 1234
+seed: 28006
 dataset:
   name: top10
   data_path: data/
 model:
   name: W-S
   num_nodes: 1000
+  k: 20
+  beta: 0.8
 num_gen: 10

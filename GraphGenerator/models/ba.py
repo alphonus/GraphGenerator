@@ -56,7 +56,8 @@ def b_a(in_graph, config):
     """
     m = in_graph.number_of_edges()
     n = in_graph.number_of_nodes()
-    k = int((n-np.sqrt(n**2-4*m))//2)
+    #k = int((n-np.sqrt(n**2-4*m))//2)
+    k = config.model.m
     out_graphs = []
     for i in range(config.num_gen):
         out_graph = barabasi_albert_graph(n, k)

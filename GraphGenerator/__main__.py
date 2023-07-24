@@ -6,7 +6,9 @@ warnings.filterwarnings("ignore")
 from GraphGenerator.preprocessing import dataio
 from GraphGenerator.utils.arg_utils import get_config, set_device
 import pandas as pd
+import networkx as nx
 
+import wandb
 
 def print_variables(vdict, name="args"):
     print("-----------------------------------------")
@@ -36,6 +38,8 @@ if __name__ == '__main__':
     parser.add_argument("-r", "--ref", help="Path of referenced graphs(Only required in evaluate phase)", default=None)
     args = parser.parse_args()
     print_variables(vars(args))
+
+
     if args.phase == 'preprocessing':
         from GraphGenerator.preprocessing import utils
         tmp_path = args.input
@@ -50,18 +54,33 @@ if __name__ == '__main__':
         dataio.save_data(graphlist, name=output_name)
 
     elif args.phase == 'train':
+
         config = get_config(args.config)
         set_device(config)
         from GraphGenerator.train import train_base as train
+        wandb.init(
+        project="Graph-generator",
+        config=dict(config.model.items())
+        )
+
+
         print("Start loading data...")
         input_data = dataio.load_data(args.input)
+
+
         if args.config is None:
             args.config = "config/{}.yaml".format(args.generator)
         # os.environ["CUDA_VISIBLE_DEVICES"] = str(config.gpu)
         print("Start (training and) inferencing graph...")
         output_data = []
+
         if isinstance(input_data, list):
             for graph in input_data:
+                components = list(nx.connected_components(graph))
+                if len(components) > 1:
+                    graph = max(components, key=len)
+                    with open("faulty_graphs.csv", 'wa') as f:
+                        f.write(f"'{args.input}', too many components\n")
                 tmp_data = train.train_and_inference(graph, args.generator, config=config)
                 if isinstance(tmp_data, list):
                     output_data.extend(tmp_data)
@@ -78,6 +97,7 @@ if __name__ == '__main__':
             output_name = "{}_to_{}.graphs".format(config.dataset.name, args.generator)
         else:
             output_name = args.output
+
         dataio.save_data(output_data, name=os.path.join(config.exp_dir, config.exp_name, output_name))
     elif args.phase == 'evaluate':
         config = get_config(args.config)
@@ -107,4 +127,5 @@ if __name__ == '__main__':
         print("Memory reserved: {} KiB.".format(torch.cuda.memory_reserved(config.device)//1024))
         print("Test finished.")
     print("Done!")
+    wandb.finish()
     # sys.exit(0)

@@ -1,9 +1,9 @@
 ---
 exp_name: DCSBM
-exp_dir: exp/DCSBM
-seed: 1234
+exp_dir: exp/DCSBM_FIRST
+seed: 20514
 dataset:
-  name: top10
+  name: FIRSTMM_DB_graph_9
   data_path: data/
 model:
   name: DCSBM

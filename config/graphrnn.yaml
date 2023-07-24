@@ -1,10 +1,10 @@
 ---
 exp_name: GraphRNN
 exp_dir: exp/GraphRNN
-device: cuda:1
+device: cuda:0
 gpu: 1
 #device: cpu
-seed: 1234
+seed: 220
 dataset:
   name: top10
   data_path: data/
@@ -25,10 +25,10 @@ train:
   lr: 3.0e-3
   lr_rate: 0.3
   milestones: [1000]
-  epochs: 2000
+  epochs: 40
   epochs_log: 1
   batch_ratio: 1
-  batch_size: 1
+  batch_size: 5
   validate_epoch: 100
   validate_sample: 1
   save_snapshot: true

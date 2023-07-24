@@ -48,7 +48,12 @@ def e_r(in_graph, config):
     """
     num_edges = in_graph.number_of_edges()
     num_nodes = in_graph.number_of_nodes()
-    p = num_edges/(num_nodes*(num_nodes-1)/2)
+    try:
+        if config.model.p is not None:
+            p = config.model.p
+            num_nodes = int(config.model.num_nodes)
+    except AttributeError:
+        p = num_edges/(num_nodes*(num_nodes-1)/2)
     out_graphs = []
     for i in range(config.num_gen):
         out_graph = random_graph(num_nodes, p)

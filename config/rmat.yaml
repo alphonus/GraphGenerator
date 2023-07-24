@@ -1,7 +1,7 @@
 ---
 exp_name: RMAT
 exp_dir: exp/RMAT
-seed: 1234
+seed: 21676
 dataset:
   name: top10
   data_path: data/

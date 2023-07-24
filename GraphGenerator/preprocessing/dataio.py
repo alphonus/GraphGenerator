@@ -1,16 +1,25 @@
 import pickle, os, sys
+import networkx as nx
 
+
+
+def largest_connected_component(graph):
+    return max(nx.connected_components(graph), key=len)
 
 def load_data(path):
     if os.path.exists(path):
-        graph = pickle.load(open(path, "rb"))
+        with open(path, 'rb') as f:
+            graph = pickle.load(f)
+        #graph = nx.read_gpickle(path)
         return graph
     else:
-        print("Invalid input data...")
+        print("Path does not exist.")
         sys.exit(1)
 
 
 def save_data(obj, name):
-    pickle.dump(obj, open("{}".format(name), "wb"))
+    with open(name, 'wb') as f:
+        pickle.dump(obj, f)
+    #nx.write_gpickle(obj, "{}".format(name))
     return 0
 

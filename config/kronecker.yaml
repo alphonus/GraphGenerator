@@ -1,7 +1,7 @@
 ---
 exp_name: Kronecker
 exp_dir: exp/Kronecker
-seed: 1234
+seed: 24223
 device: cpu
 gpu: -1
 dataset:

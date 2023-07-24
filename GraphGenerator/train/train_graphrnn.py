@@ -31,6 +31,7 @@ from GraphGenerator.metrics.memory import get_peak_gpu_memory
 # from args import Args
 # import create_graphs
 
+import wandb
 
 def train_vae_epoch(epoch, args, rnn, output, data_loader,
                     optimizer_rnn, optimizer_output,
@@ -94,7 +95,16 @@ def train_vae_epoch(epoch, args, rnn, output, data_loader,
             print('Epoch: {}/{}, train bce loss: {:.6f}, train kl loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
                 epoch, args.train.epochs,loss_bce.data[0], loss_kl.data[0], args.dataset.name, args.model.num_layers, args.model.hidden_size_rnn))
             print('z_mu_mean', z_mu_mean, 'z_mu_min', z_mu_min, 'z_mu_max', z_mu_max, 'z_sgm_mean', z_sgm_mean, 'z_sgm_min', z_sgm_min, 'z_sgm_max', z_sgm_max)
-
+            wandb.log({
+                'train bce loss': loss_bce.data[0],
+                'train kl loss': loss_kl.data[0],
+                'z_mu_mean':z_mu_mean,
+                'z_mu_min':z_mu_min,
+                'z_mu_max':z_mu_max,
+                'z_sgm_mean':z_sgm_mean,
+                'z_sgm_min':z_sgm_min,
+                'z_sgm_max':z_sgm_max,
+                       })
         # logging
         log_value('bce_loss_'+args.fname, loss_bce.data[0], epoch*args.batch_ratio+batch_idx)
         log_value('kl_loss_' +args.fname, loss_kl.data[0], epoch*args.batch_ratio + batch_idx)
@@ -231,6 +241,10 @@ def train_mlp_epoch(epoch, args, rnn, output, data_loader,
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}, memory: {} MiB'.format(
                 epoch, args.train.epochs, loss.data, args.dataset.name, args.model.num_layers,
                 args.model.hidden_size_rnn, get_peak_gpu_memory(args.device) // 1024 // 1024))
+            wandb.log({
+                'train loss':loss.data,
+                'memory': get_peak_gpu_memory(args.device) // 1024 // 1024,
+                       })
 
         # logging
         # log_value('loss_'+args.fname, loss.data, epoch*args.batch_ratio+batch_idx)
@@ -388,7 +402,10 @@ def train_mlp_forward_epoch(epoch, args, rnn, output, data_loader):
         if epoch % args.train.epochs_log==0 and batch_idx==0: # only output first batch's statistics
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
                 epoch, args.train.epochs,loss.data, args.dataset.name, args.model.num_layers, args.model.hidden_size_rnn))
-
+            wandb.log({
+                'train loss':loss.data,
+                'memory': get_peak_gpu_memory(args.device) // 1024 // 1024,
+                       })
         # logging
         log_value('loss_'+args.fname, loss.data, epoch*args.batch_ratio+batch_idx)
 
@@ -525,7 +542,10 @@ def train_rnn_epoch(epoch, args, rnn, output, data_loader,
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}, memory: {} MiB'.format(
                 epoch, args.train.epochs,loss.data, args.dataset.name, args.model.num_layers,
                 args.model.hidden_size_rnn, get_peak_gpu_memory(args.device)//1024//1024))
-
+            wandb.log({
+                'train loss':loss.data,
+                'memory': get_peak_gpu_memory(args.device) // 1024 // 1024,
+                       })
         # logging
         # log_value('loss_'+args.fname, loss.data, epoch*args.batch_ratio+batch_idx)
         # log_value('loss_' + args.fname, loss.data, epoch * args.batch_ratio + batch_idx)
@@ -648,7 +668,9 @@ def train_rnn_forward_epoch(epoch, args, rnn, output, data_loader):
         if epoch % args.train.epochs_log==0 and batch_idx==0: # only output first batch's statistics
             print('Epoch: {}/{}, train loss: {:.6f}, graph type: {}, num_layer: {}, hidden: {}'.format(
                 epoch, args.train.epochs,loss.data, args.dataset.name, args.model.num_layers, args.model.hidden_size_rnn))
-
+            wandb.log({
+                'train loss':loss.data,
+                       })
         # logging
         log_value('loss_'+args.fname, loss.data, epoch*args.batch_ratio+batch_idx)
         # print(y_pred.size())
@@ -989,6 +1011,9 @@ def train_graphrnn(train_graphs, args):
 
     scheduler_rnn = MultiStepLR(optimizer_rnn, milestones=args.train.milestones, gamma=args.train.lr_rate)
     scheduler_output = MultiStepLR(optimizer_output, milestones=args.train.milestones, gamma=args.train.lr_rate)
+
+    wandb.watch(rnn,log_freq=20)
+    wandb.watch(output,log_freq=20)
 
     # start main loop
     time_all = np.zeros(args.train.epochs)

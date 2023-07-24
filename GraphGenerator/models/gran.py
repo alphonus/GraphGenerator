@@ -1626,7 +1626,7 @@ class GranRunner(object):
         for epoch in range(resume_epoch, self.train_conf.max_epoch):
             model.train()
             lr_scheduler.step()
-            train_iterator = train_loader.__iter__()
+            train_iterator = iter(train_loader)
             # print("### check: {}".format(len(train_iterator)))
 
             for inner_iter in range(len(train_loader) // self.num_gpus):
@@ -1635,7 +1635,7 @@ class GranRunner(object):
                 batch_data = []
                 if self.use_gpu:
                     for _ in self.gpus:
-                        data = train_iterator.next()
+                        data = next(train_iterator)
                         batch_data.append(data)
                         iter_count += 1
 

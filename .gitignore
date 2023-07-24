@@ -1,3 +1,25 @@
+#build files
+GraphGenerator/evaluate/orca
+GraphGenerator/models/bter_ops/top10.m
+GraphGenerator/models/kronecker_ops/Makefile.config
+GraphGenerator/models/kronecker_ops/__init__.py
+GraphGenerator/models/kronecker_ops/examples/
+GraphGenerator/models/kronecker_ops/glib-core/
+GraphGenerator/models/kronecker_ops/snap-adv/
+GraphGenerator/models/kronecker_ops/snap-core/
+
+#generated files
+data/
+evaluation_of_gen/
+exp/
+generated_datasets/
+wandb/
+*.csv
+*.col
+*.edgelist
+*.graphs
+*.graph
+
 # pycharm files
 .idea/
 .idea

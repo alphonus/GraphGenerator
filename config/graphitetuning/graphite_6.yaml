@@ -1,30 +1,27 @@
 ---
-exp_name: VGAE
-exp_dir: exp/VGAE
+exp_name: Graphite_FIRST
+exp_dir: exp/Graphite_FIRST
 device: cuda:0
-gpu: 0
+gpu: 1
 #device: cpu
-seed: 23710
+seed: 2148
 dataset:
-  name: top10
+  name: FIRSTMM_DB_graph_10
   data_path: data/
 model:
-  name: VGAE
-  num_nodes: 53
-  embedding_dim: 32
-  hidden_dim: 32
+  name: Graphite
+  num_nodes: 
+  embedding_dim: 512
+  hidden_dim: 1024
+  decoding_dim: 512
   variational: false
   has_feature: false
-  num_GNN_layers: 2
 train:
   optimizer: Adam
   lr: 1.0e-2
-  max_epochs: 100
+  max_epochs: 500
   display_iter: 10
   snapshot_epoch: 1000
 #test:
 #  test_model_dir: exp/VGAE/VGAE_cora_2021-Feb-25-10-38-59_12345
 #  test_model_name: model_snapshot_0001000.pth
-eval:
-  num_nodes: [100, 1000, 10000, 100000, 1000000]
-  graph_type: W-S # selected from [E-R, B-A, W-S, grid]

@@ -6,7 +6,8 @@ def edgelist_to_graph(path):
     try:
         graph = nx.read_edgelist(path)
         return graph
-    except:
+    except Exception as e:
+        print(e)
         print("Wrong path entered! Absolute path of edgelist file pxpected.")
         sys.exit(1)
 

@@ -1,19 +1,19 @@
 ---
 exp_name: BiGG
-exp_dir: exp/BiGG
-device: cuda:2
+exp_dir: exp/BiGG_FIRST
+device: cuda:0
 #device: cpu
-gpu: 2
-seed: 1234
+gpu: 0
+seed: 5763
 dataset:
-  name: top10
+  name: FIRSTMM_DB_graph_2
   data_path: data/
   directed: false
   self_loop: false
   bfs_permute: false
 model:
   name: BiGG
-  max_num_nodes: 743
+  max_num_nodes: 10000
   embed_dim: 256
   num_RNN_layers: 2
   bits_compress: 256

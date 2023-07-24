@@ -1,19 +1,19 @@
 ---
-exp_name: Graphite
-exp_dir: exp/Graphite_cacond
+exp_name: Graphite_FIRST
+exp_dir: exp/Graphite_FIRST
 device: cuda:0
 gpu: 1
 #device: cpu
-seed: 27842
+seed: 4772
 dataset:
-  name: cacond_graph_10
+  name: FIRSTMM_DB_graph_10
   data_path: data/
 model:
   name: Graphite
-  num_nodes: 53
-  embedding_dim: 64
+  num_nodes: 
+  embedding_dim: 128
   hidden_dim: 256
-  decoding_dim: 64
+  decoding_dim: 128
   variational: true
   has_feature: false
 train:

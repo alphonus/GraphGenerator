@@ -1,9 +1,9 @@
 ---
 exp_name: SBM
-exp_dir: exp/SBM
-seed: 1234
+exp_dir: exp/SBM_FIRST2
+seed: 30789
 dataset:
-  name: top10
+  name: FIRSTMM_DB_graph_9
   data_path: data/
 model:
   name: SBM

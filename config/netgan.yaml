@@ -1,16 +1,16 @@
 ---
 exp_name: NetGAN
 exp_dir: exp/NetGAN
-device: cuda:1
+device: cuda:0
 gpu: 1
 #device: cpu
-seed: 1234
+seed: 10043
 dataset:
   name: top10
   data_path: data/
 model:
   name: NetGAN
-  num_nodes: 1000
+  num_nodes: 53
   embedding_dim: 256
   rw_len: 16
 train:

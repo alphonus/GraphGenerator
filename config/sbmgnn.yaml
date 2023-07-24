@@ -1,17 +1,17 @@
 ---
-exp_name: SBMGNN
-exp_dir: exp/SBMGNN
-seed: 1234
+exp_name: SBMGNN_DD
+exp_dir: exp/SBMGNN_DD
+seed: 28517
 gpu: 1
-device: cuda:1
+device: cuda:0
 dataset:
-  name: top10
+  name: _graph_0
   data_path: data/
   features: false
 model:
   name: SBMGNN
   hidden: [64, 50]
-  num_nodes: 100
+  num_nodes: 53
   g_hidden: 32
   deep_decoder: 1
   dropout: 0.5
@@ -21,7 +21,7 @@ model:
   variational: false
 train:
   lr: 0.01
-  max_epochs: 100
+  max_epochs: 150
   weight_decay: 0.0
   use_k_fold: false
   k: 5

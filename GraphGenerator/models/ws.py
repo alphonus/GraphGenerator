@@ -108,5 +108,6 @@ def w_s(in_graph, config):
     :param config: configure object
     :return: generated graphs, type: list of nx.Graph
     """
-    parameters = generator_optimization(in_graph, config.model.name)
+    #parameters = generator_optimization(in_graph, config.model.name)
+    parameters = config.model.num_nodes, config.model.k, config.model.beta
     return generate_new_graph(parameters, config.model.name, repeat=config.num_gen)

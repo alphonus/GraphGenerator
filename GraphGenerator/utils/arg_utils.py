@@ -47,11 +47,17 @@ def mkdir(folder):
 
 
 def set_device(config):
-    if int(config.gpu) >= 0 and config.device.startswith('cuda:'):
-        # os.environ["CUDA_VISIBLE_DEVICES"] = str(config.gpu)
-        # config.device = 'cuda:0'
-        print('use gpu indexed: {}'.format(config.gpu))
-    else:
+    try:
+        if int(config.gpu) >= 0 and config.device.startswith('cuda:'):
+            # os.environ["CUDA_VISIBLE_DEVICES"] = str(config.gpu)
+            # config.device = 'cuda:0'
+            print('use gpu indexed: {}'.format(config.gpu))
+        else:
+            config.gpu = -1
+            os.environ["CUDA_VISIBLE_DEVICES"] = ""
+            config.device = 'cpu'
+            print('use cpu')
+    except AttributeError:
         config.gpu = -1
         os.environ["CUDA_VISIBLE_DEVICES"] = ""
         config.device = 'cpu'

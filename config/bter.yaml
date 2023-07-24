@@ -1,7 +1,7 @@
 ---
 exp_name: BTER
 exp_dir: exp/BTER
-seed: 1234
+seed: 15798
 dataset:
   name: top10
   data_path: data/

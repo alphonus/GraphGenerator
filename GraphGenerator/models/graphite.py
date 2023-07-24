@@ -100,7 +100,7 @@ class GraphiteVAE(nn.Module):
         recon_1 = recon_1*d
         recon_2 = recon_2*d
         update = self.decode1(support, recon_1, recon_2) + self.decode0(x, recon_1, recon_2)
-        update = self.decode2((update, recon_1, recon_2))
+        update = self.decode2(update, recon_1, recon_2)
         update = (1-self.autoregressive_scalar) * support + self.autoregressive_scalar * update
         reconstructions = torch.mm(update, update.T)
         return reconstructions
